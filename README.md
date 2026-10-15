@@ -36,6 +36,12 @@ The first build downloads the sherpa-onnx AAR (~48 MB) from its GitHub release a
 - Models copied in with `adb push` are invisible to the app (Android 11+ blocks shell-created folders in Android/data); install models through the app.
 - `adb logcat -s NeuralSpeaker` shows load times, per-piece synthesis time and any "Gap" waits.
 
+## License and credits
+Proseody's own code is MIT-licensed (see `LICENSE`). It builds on:
+- [sherpa-onnx](https://github.com/k2-fsa/sherpa-onnx) (Apache-2.0) for on-device neural TTS, fetched at build time
+- [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) (Apache-2.0) and the Piper voice [fahrettin](https://github.com/rhasspy/piper) (trained on the CC0 NabuCasa voice dataset), downloaded by the app from the sherpa-onnx model releases on first use
+- PdfBox-Android, Jsoup, Apache Commons Compress (Apache-2.0); ML Kit Text Recognition (Google, ML Kit terms); AndroidX/Jetpack Compose and Media3 (Apache-2.0)
+
 ## Ideas for later
 - Exact word timing for Piper/Kokoro from the model's per-phoneme durations instead of the length-weighted estimate
 - Daily listening goals / reminders, bookmarks and notes, sleep timer
