@@ -1,5 +1,6 @@
 import java.net.URI
 import java.security.MessageDigest
+import java.util.Properties
 
 plugins {
     id("com.android.application")
@@ -52,12 +53,32 @@ android {
         }
     }
 
+    // The release key lives outside the repository (~/.android-keys) and is never committed.
+    val releaseKeyProps = File(System.getProperty("user.home"), ".android-keys/proseody-release.properties")
+    signingConfigs {
+        if (releaseKeyProps.exists()) {
+            create("release") {
+                val props = Properties().apply { releaseKeyProps.inputStream().use { load(it) } }
+                storeFile = file(props.getProperty("storeFile"))
+                storePassword = props.getProperty("storePassword")
+                keyAlias = props.getProperty("keyAlias")
+                keyPassword = props.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-            // Personal sideload build: sign with the local debug key.
+            // Published APKs use the private release key; without it (e.g. a fresh clone) fall back to debug.
+            signingConfig = signingConfigs.findByName("release") ?: signingConfigs.getByName("debug")
+        }
+        // Same as release, but signed with the debug key the author's own phone install started with,
+        // so that install keeps updating in place.
+        create("personal") {
+            initWith(getByName("release"))
             signingConfig = signingConfigs.getByName("debug")
         }
     }

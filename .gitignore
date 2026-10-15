@@ -5,6 +5,12 @@ local.properties
 *.iml
 .kotlin/
 
+# Signing material never belongs in the repo (the release key lives in ~/.android-keys).
+*.jks
+*.keystore
+keystore.properties
+*release.properties
+
 # Fetched by app/build.gradle.kts (checksum-verified), not committed.
 app/libs/*.aar
 app/libs/*.part

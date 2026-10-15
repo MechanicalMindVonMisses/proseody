@@ -4,6 +4,11 @@
 
 A personal read-aloud app for Android: import text, web articles, PDFs, EPUBs, Word files or photos of pages, then listen with live sentence and word highlighting, using system voices or high-quality offline neural voices.
 
+## Install
+1. On your phone (Android 10 or newer, 64-bit), download `proseody-<version>-arm64.apk` from the [latest release](https://github.com/MechanicalMindVonMisses/proseody/releases/latest).
+2. Open it and, when Android asks, allow your browser to install unknown apps. If Play Protect warns about an unknown developer, choose *Install anyway*.
+3. Open Proseody, add something to read, then tap the voice icon in the reader to download the offline neural voices if you want them: Kokoro for English (334 MB) and Fahrettin for Turkish (64 MB). Wi-Fi recommended. System voices work without any download.
+
 ## Features
 - Library with search, rename, delete, per-document progress and listening-time estimate
 - Import: paste text, web link (article extraction, PDF links too), files (PDF, EPUB, DOCX, TXT, Markdown, HTML), photos and camera scans (on-device ML Kit OCR, scanned-PDF OCR fallback)
@@ -28,7 +33,7 @@ Requires JDK 17+ and the Android SDK (platform 35); set `sdk.dir` in `local.prop
 ./gradlew :app:assembleRelease          # Windows: gradlew.bat :app:assembleRelease
 adb install -r app/build/outputs/apk/release/app-arm64-v8a-release.apk   # phones; the x86_64 APK is for emulators
 ```
-The first build downloads the sherpa-onnx AAR (~48 MB) from its GitHub release and verifies its SHA-256. Release builds are R8-minified, split per ABI and signed with the local debug key (sideload only). On Windows, if a build fails on a locked lint jar, run `./gradlew --stop` first.
+The first build downloads the sherpa-onnx AAR (~48 MB) from its GitHub release and verifies its SHA-256. Release builds are R8-minified and split per ABI. They are signed with the maintainer's private key when `~/.android-keys/proseody-release.properties` exists (it is never committed), otherwise with your local debug key; the `personal` build type is always debug-signed. On Windows, if a build fails on a locked lint jar, run `./gradlew --stop` first.
 
 ## Neural voice notes (Galaxy S23)
 - Kokoro fp32: loads in ~1.1 s, synthesizes at ~0.65× real time (int8 was slower, ~0.75×). Playback starts with a ~30-char piece and pieces grow 30% each (cap 140 chars), so the next piece is always ready: no gaps at 1× and 1.5×; above ~2× expect stutter.
