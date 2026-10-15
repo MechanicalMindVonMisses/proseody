@@ -1,0 +1,10 @@
+.gradle/
+build/
+local.properties
+.idea/
+*.iml
+.kotlin/
+
+# Fetched by app/build.gradle.kts (checksum-verified), not committed.
+app/libs/*.aar
+app/libs/*.part
